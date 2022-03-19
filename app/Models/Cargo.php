@@ -11,7 +11,7 @@ class Cargo extends Model
     const UPDATED_AT = null;
     const CREATED_AT = null;
     protected $table = 'cargo';
-    protected $primaryKey = 'id_cargo	';
+    protected $primaryKey = 'id_cargo';
     protected $fillable = [
        'id_emp',
        'nomb_cargo',
