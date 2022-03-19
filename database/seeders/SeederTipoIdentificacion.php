@@ -20,7 +20,7 @@ class SeederTipoIdentificacion extends Seeder
        $cedula->save();
 
        $ruc= new TipoIdentificacion();
-       $ruc->nombre_tipo='RUC';
+       $ruc->nombre_tipo_ident='RUC';
        $ruc->estado_tipo_ident='A';
        $ruc->save();
     }
