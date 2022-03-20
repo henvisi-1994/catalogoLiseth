@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
@@ -77,9 +78,14 @@ class ProductoController extends Controller
             $url = $request->input('url');
             if ($request->hasFile('file')) {
                 $imagen = $request->file('file');
-                $path_imagen = $imagen->store('public/producto');
+                $image_name=$imagen->getClientOriginalName();
+               $storage= Storage::disk('spaces')->put('/productos/'.$image_name,file_get_contents($imagen->getRealPath()),'public');
+              $url = Storage::disk('spaces')->url('/productos/'.$image_name);
+              $cdn_url=str_replace('digitaloceanspaces','cdn.digitaloceanspaces',$url);
+              $image_name = $cdn_url;
+               /* $path_imagen = $imagen->store('public/producto');
                 $path_imagen = str_replace("public/", "", $path_imagen);
-                $image_name = $url.'storage/'.$path_imagen;
+                $image_name = $url.'storage/'.$path_imagen;*/
             }
             $producto = new Producto();
             $producto->id_empresa  =  $request->input('id_empresa');
@@ -190,9 +196,11 @@ return  $productos;
             $url = $request->input('url');
             if ($request->hasFile('file')) {
                 $imagen = $request->file('file');
-                $path_imagen = $imagen->store('public/producto');
-                $path_imagen = str_replace("public/", "", $path_imagen);
-                $image_name = $url.'storage/'.$path_imagen;
+                $image_name=$imagen->getClientOriginalName();
+               $storage= Storage::disk('spaces')->put('/productos/'.$image_name,file_get_contents($imagen->getRealPath()),'public');
+              $url = Storage::disk('spaces')->url('/productos/'.$image_name);
+              $cdn_url=str_replace('digitaloceanspaces','cdn.digitaloceanspaces',$url);
+              $image_name = $cdn_url;
             }else{
             $producto= Producto::where('id_prod',$id)->first();
             $image_name=$producto->imagen_prod;
